@@ -1,0 +1,8 @@
+---
+- name: Lint multiple roles
+  hosts: all
+  roles:
+    - iscsi_target
+    - register_host
+    - telegraf-client
+    - too_simple_server
