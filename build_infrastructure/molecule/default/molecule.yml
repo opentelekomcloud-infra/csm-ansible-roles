@@ -1,0 +1,42 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+  options:
+    managed: False
+lint:
+  name: yamllint
+platforms:
+  - name: instance
+    image: python:3.7
+provisioner:
+  name: ansible
+  connection_options:
+    ansible_python_interpreter: "PYTHONPATH=$PYTHONPATH:/usr/lib/python3/dist-packages /usr/bin/env python"
+  inventory:
+    group_vars:
+      all:
+        scenario_name: "infrastructure"
+        key_name: 'test_host_rsa'
+        tmp_dir: "/tmp"
+  lint:
+    name: ansible-lint
+scenario:
+  test_sequence:
+    - lint
+    - dependency
+    - destroy
+    - syntax
+    - create
+    - prepare
+    - converge
+    - idempotence
+    - side_effect
+    - verify
+    - cleanup
+    - destroy
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

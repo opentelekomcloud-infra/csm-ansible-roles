@@ -1,0 +1,23 @@
+---
+# Duplicates test_host setup
+- name: Prepare
+  become: yes
+  hosts: all
+  vars:
+    requirements: 'requirements.txt'
+    infrastructure_dir: "infrastructure"
+  roles:
+  - darkwizard242.terraform
+  tasks:
+   - name: Copy Requirements
+     copy:
+       src: "{{ requirements }}"
+       dest: "{{ tmp_dir }}"
+   - name: Copy Terraform dir
+     copy:
+       src: "{{ infrastructure_dir }}"
+       dest: "{{ tmp_dir }}"
+   - name: Install master requirements
+     pip:
+       executable: "pip3"
+       requirements: "{{ tmp_dir }}/{{ requirements }}"
