@@ -5,6 +5,8 @@ driver:
   name: docker
   options:
     managed: False
+lint:
+  name: yamllint
 platforms:
   - name: instance
     image: python:3.7
@@ -15,10 +17,11 @@ provisioner:
   inventory:
     group_vars:
       all:
-        scenario_name: "scenario1"
-        terraform_base_dir: "infrastructure"
+        scenario_name: "infrastructure"
         key_name: 'test_host_rsa'
         tmp_dir: "/tmp"
+  lint:
+    name: ansible-lint
 scenario:
   test_sequence:
     - lint
@@ -28,10 +31,12 @@ scenario:
     - create
     - prepare
     - converge
+    - idempotence
     - side_effect
     - verify
     - cleanup
     - destroy
 verifier:
   name: testinfra
-
+  lint:
+    name: flake8

@@ -4,7 +4,7 @@
   register: LATEST_VERSION
 
 - name: Check active version of too_simple_server
-  shell: "{{ server|quote }} --version" # noqa 301 305
+  command: "{{ server }} --version" # noqa 301 305
   register: CURRENT_VERSION
   ignore_errors: yes
 

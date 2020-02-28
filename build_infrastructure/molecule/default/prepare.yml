@@ -1,23 +1,20 @@
 ---
-# Duplicates test_host setup
-- name: Prepare
-  become: yes
+- name: Download or create shared private key
   hosts: all
+  become: yes
   vars:
-    requirements: 'requirements.txt'
-    infrastructure_dir: "infrastructure"
-  roles:
-  - darkwizard242.terraform
+   username: "{{ lookup('env', 'OS_USERNAME') }}"
+   password: "{{ lookup('env', 'OS_PASSWORD') }}"
+   auth_url: https://iam.eu-de.otc.t-systems.com/v3
+   user_domain_name: OTC00000000001000000448
+   project_name: eu-de_csm
+   region_name: eu-de
   tasks:
-   - name: Copy Requirements
-     copy:
-       src: "{{ requirements }}"
-       dest: "{{ tmp_dir }}"
-   - name: Copy Terraform dir
-     copy:
-       src: "{{ infrastructure_dir }}"
-       dest: "{{ tmp_dir }}"
-   - name: Install master requirements
-     pip:
-       executable: "pip3"
-       requirements: "{{ tmp_dir }}/{{ requirements }}"
+   - name:  Creation openstack directory
+     file:
+       path: ~/.config/openstack/
+       state: directory
+   - name: Filling template of clouds.yaml.j2
+     template:
+       src: clouds.yaml.j2
+       dest: ~/.config/openstack/clouds.yaml

@@ -1,10 +1,22 @@
 ---
 - name: Download or create shared private key
   block:
-  - name: Download/create key  # noqa 301 - get_key is more or less idempotent
-    environment: "{{ default_variables }}"
-    script: "get_key.py --output {{ key_path }} --key key/{{ key_name }}"
-    args:
-      executable: python3
-    register: get_key_output
-    changed_when: get_key_output == 'Private key is up to date\n'
+   - name: Copy Requirements
+     copy:
+       src: "{{ requirements }}"
+       dest: "{{ tmp_dir }}"
+   - name: Copy everything
+     copy:
+       src: "{{ terraform_base_dir }}/"
+       dest: "{{ tmp_dir }}/terraform"
+   - name: Install master requirements
+     pip:
+       executable: "pip3"
+       requirements: "{{ tmp_dir }}/{{ requirements }}"
+   - name: Download/create key  # noqa 301 - get_key is more or less idempotent
+     environment: "{{ default_variables }}"
+     script: "get_key.py --output {{ key_path }} --key key/{{ key_name }}"
+     args:
+       executable: python3
+     register: get_key_output
+     changed_when: get_key_output == 'Private key is up to date\n'
