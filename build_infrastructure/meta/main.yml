@@ -9,6 +9,3 @@ galaxy_info:
   - name: Debian
     versions:
     - all
-
-dependencies:
-  - role: darkwizard242.terraform

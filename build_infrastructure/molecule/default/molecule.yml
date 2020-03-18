@@ -17,7 +17,6 @@ provisioner:
       all:
         scenario_name: "scenario1"
         terraform_base_dir: "infrastructure"
-        key_name: 'test_host_rsa'
         tmp_dir: "/tmp"
 scenario:
   test_sequence:
