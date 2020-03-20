@@ -6,3 +6,4 @@ username: null
 password: null
 
 desired_state: present
+terraform_workspace: 'test'

@@ -5,6 +5,7 @@
     environment: "{{ default_variables }}"
     terraform:
       state: absent
+      workspace: "{{ terraform_workspace }}"
       force_init: true
       project_path: "{{ terraform_remote_dir }}/{{ scenario_name }}"
       backend_config:
