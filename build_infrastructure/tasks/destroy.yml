@@ -8,14 +8,4 @@
       workspace: "{{ terraform_workspace }}"
       force_init: true
       project_path: "{{ terraform_remote_dir }}/{{ scenario_name }}"
-      backend_config:
-        key: "terraform_state/{{ scenario_name }}"
-        bucket: "obs-csm"
-        region: "eu-de"
-      variables: "{{ tf_variables }}"
-  - name:  Remove terraform directory
-    file:
-      path: "/tmp/{{ item }}"
-      state: absent
-    with_fileglob:
-      - /tmp/*
+      backend_config: "{{ backend_config }}"
