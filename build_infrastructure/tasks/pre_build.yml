@@ -5,8 +5,6 @@
     dest: "{{ tmp_dir }}"
 - name: Copy everything
   copy:
-    mode: preserve
-    owner: "{{ ansible_user_id }}"
     src: "{{ terraform_base_dir }}/"
     dest: "{{ tmp_dir }}/terraform"
 - name: Install master requirements
