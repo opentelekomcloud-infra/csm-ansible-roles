@@ -1,6 +1,6 @@
 terraform {
   required_providers {
-    opentelekomcloud = ">= 1.15.0"
+    opentelekomcloud = ">= 1.16.0"
   }
 }
 

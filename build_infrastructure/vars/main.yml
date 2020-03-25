@@ -1,5 +1,5 @@
 terraform_local_dir: "{{ terraform_base_dir }}/{{ scenario_name }}"
-terraform_remote_dir: "{{ tmp_dir }}/terraform"
+terraform_remote_dir: "{{ tmp_dir }}/{{ terraform_base_dir }}"
 key_path: "{{ tmp_dir }}/{{ key_name }}"
 
 backend_config:

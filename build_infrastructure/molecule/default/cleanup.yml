@@ -1,11 +1,10 @@
 ---
-- name: Converge
+- name: Cleanup
   hosts: instance
   vars:
     requirements: "requirements.txt"
     scenario_name: "scenario1"
     key_name: "key_scenario1"
-    infra_state: present
+    infra_state: absent
   roles:
-    - role: darkwizard242.terraform
     - role: build_infrastructure

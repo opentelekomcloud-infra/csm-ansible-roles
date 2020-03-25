@@ -3,10 +3,13 @@
   copy:
     src: "{{ requirements }}"
     dest: "{{ tmp_dir }}"
-- name: Copy everything
-  copy:
-    src: "{{ terraform_base_dir }}/"
-    dest: "{{ tmp_dir }}/terraform"
+- name: Archive terraform setup
+  local_action: "archive dest='{{ terraform_base_dir }}.tgz' path='{{ terraform_base_dir }}' exclude_path='.terraform'"
+- name: Unarchive terraform setup on remote
+  unarchive:
+    src: "{{ terraform_base_dir }}.tgz"
+    dest: "{{ tmp_dir }}"
+    keep_newer: yes
 - name: Install master requirements
   pip:
     executable: "pip3"
