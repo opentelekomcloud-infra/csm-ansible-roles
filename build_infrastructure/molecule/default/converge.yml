@@ -6,6 +6,7 @@
     scenario_name: "scenario1"
     key_name: "key_scenario1"
     infra_state: present
+    terraform_version: "0.12.20"
   roles:
-    - role: darkwizard242.terraform
+    - role: anton_sidelnikov.terraform
     - role: build_infrastructure
