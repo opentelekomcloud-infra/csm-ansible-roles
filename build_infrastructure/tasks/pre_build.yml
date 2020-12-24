@@ -21,6 +21,9 @@
 
 - name: Handle key pair
   block:
+  - name: Install requirements
+    pip:
+      requirements: requirements.txt
   - name: Download/create key  # noqa 301 - get_key is more or less idempotent
     environment: "{{ default_variables }}"
     script: "get_key.py --output {{ key_path }} --key key/{{ key_name }}"
