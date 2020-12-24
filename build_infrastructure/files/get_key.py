@@ -22,6 +22,7 @@ def parse_params():
     parser = ArgumentParser(description='Synchronize used private key with OBS')
     parser.add_argument('--key', '-k', required=True)
     parser.add_argument('--output', '-o', required=True)
+    parser.add_argument('--local', action='store_true', default=False)
     args = parser.parse_args()
     return args
 
@@ -118,13 +119,13 @@ def get_key_from_s3(key_file, key_name, credential: Credential) -> str:
 
 def _session_token_request():
     return {
-        "auth": {
-            "identity": {
-                "methods": [
-                    "token"
+        'auth': {
+            'identity': {
+                'methods': [
+                    'token'
                 ],
-                "token": {
-                    "duration-seconds": "900",
+                'token': {
+                    'duration-seconds': '900',
                 }
             }
         }
@@ -133,15 +134,15 @@ def _session_token_request():
 
 def _get_session_token(auth_url, os_token) -> Credential:
     v30_url = auth_url.replace('/v3', '/v3.0')
-    token_url = f"{v30_url}/OS-CREDENTIAL/securitytokens"
+    token_url = f'{v30_url}/OS-CREDENTIAL/securitytokens'
 
     auth_headers = {'X-Auth-Token': os_token}
 
     response = requests.post(token_url, headers=auth_headers, json=_session_token_request())
     if response.status_code != 201:
-        raise RuntimeError("Failed to get temporary AK/SK:", response.text)
-    data = response.json()["credential"]
-    return Credential(data["access"], data["secret"], data["securitytoken"])
+        raise RuntimeError('Failed to get temporary AK/SK:', response.text)
+    data = response.json()['credential']
+    return Credential(data['access'], data['secret'], data['securitytoken'])
 
 
 def acquire_temporary_ak_sk() -> Credential:
@@ -158,8 +159,14 @@ def acquire_temporary_ak_sk() -> Credential:
 def main():
     """Run the script"""
     args = parse_params()
-    credential = acquire_temporary_ak_sk()
-    key_file = get_key_from_s3(args.output, args.key, credential)
+
+    key_file = args.output
+    if args.local:
+        _generate_new_pair(key_file)
+        print('Generated local key pair:', key_file)
+    else:
+        credential = acquire_temporary_ak_sk()
+        key_file = get_key_from_s3(key_file, args.key, credential)
     os.chmod(key_file, RW_OWNER)
 
 

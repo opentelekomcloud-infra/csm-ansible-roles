@@ -26,7 +26,11 @@
       requirements: requirements.txt
   - name: Download/create key  # noqa 301 - get_key is more or less idempotent
     environment: "{{ default_variables }}"
-    script: "get_key.py --output {{ key_path }} --key key/{{ key_name }}"
+    script: >
+      get_key.py
+      --output {{ key_path }}
+      --key key/{{ key_name }}
+      {{ '--local' if terraform_workspace == 'test' }}
     args:
       executable: python3
     register: get_key_output
