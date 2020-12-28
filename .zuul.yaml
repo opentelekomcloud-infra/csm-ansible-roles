@@ -1,0 +1,15 @@
+---
+- job:
+    name: ansible-lint
+    parent: otc-tox
+    vars:
+      tox_envlist: linters
+
+- project:
+    merge-mode: squash-merge
+    check:
+      jobs:
+        - ansible-lint
+    gate:
+      jobs:
+        - ansible-lint
