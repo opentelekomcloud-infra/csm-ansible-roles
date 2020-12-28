@@ -4,14 +4,15 @@ dependency:
 driver:
   name: docker
   options:
-    managed: False
+    managed: false
 platforms:
   - name: instance
     image: python:3.7
 provisioner:
   name: ansible
   connection_options:
-    ansible_python_interpreter: "PYTHONPATH=$PYTHONPATH:/usr/lib/python3/dist-packages /usr/bin/env python"
+    ansible_python_interpreter: |
+      PYTHONPATH=$PYTHONPATH:/usr/lib/python3/dist-packages /usr/bin/env python
   inventory:
     group_vars:
       all:
@@ -34,4 +35,3 @@ scenario:
 lint: ansible-lint
 verifier:
   name: testinfra
-

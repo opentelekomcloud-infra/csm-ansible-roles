@@ -6,6 +6,6 @@ galaxy_info:
   author: OTC CSM team
   license: Apache-2.0
   platforms:
-  - name: Debian
-    versions:
-    - all
+    - name: Debian
+      versions:
+        - all

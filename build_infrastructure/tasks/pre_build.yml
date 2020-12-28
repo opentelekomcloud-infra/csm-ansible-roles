@@ -21,29 +21,28 @@
 
 - name: Handle key pair
   block:
-  - name: Install requirements
-    pip:
-      requirements: requirements.txt
-      executable: "pip3"
-  - name: Download/create key  # noqa 301 - get_key is more or less idempotent
-    environment: "{{ default_variables }}"
-    script: >
-      get_key.py
-      --output {{ key_path }}
-      --key key/{{ key_name }}
-      {{ '--local' if terraform_workspace == 'test' }}
-    args:
-      executable: python3
-    register: get_key_output
-    changed_when: get_key_output.stdout != 'Private key is up to date\n'
-  - name: Read public key
-    slurp:
-      src: '{{ key_path }}.pub'
-    register: public_key_b64
-  - name: Save public key value
-    vars:
-      pub_key_value: "{{ public_key_b64.content | b64decode }}"
-      tf_pub_key: "{ 'TF_VAR_public_key': '{{ pub_key_value }}' }"
-    set_fact:
-      default_variables: "{{ default_variables | combine(tf_pub_key) }}"
-
+    - name: Install requirements
+      pip:
+        requirements: requirements.txt
+        executable: "pip3"
+    - name: Download/create key  # noqa 301 - get_key is more or less idempotent
+      environment: "{{ default_variables }}"
+      script: >
+        get_key.py
+        --output {{ key_path }}
+        --key key/{{ key_name }}
+        {{ '--local' if terraform_workspace == 'test' }}
+      args:
+        executable: python3
+      register: get_key_output
+      changed_when: get_key_output.stdout != 'Private key is up to date\n'
+    - name: Read public key
+      slurp:
+        src: '{{ key_path }}.pub'
+      register: public_key_b64
+    - name: Save public key value
+      vars:
+        pub_key_value: "{{ public_key_b64.content | b64decode }}"
+        tf_pub_key: "{ 'TF_VAR_public_key': '{{ pub_key_value }}' }"
+      set_fact:
+        default_variables: "{{ default_variables | combine(tf_pub_key) }}"

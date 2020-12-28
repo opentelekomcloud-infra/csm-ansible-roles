@@ -8,11 +8,11 @@
     user_domain_name: OTC00000000001000000447
     project_name: eu-de_rus
   tasks:
-   - name:  Creation openstack directory
-     file:
-       path: /etc/openstack/
-       state: directory
-   - name: Filling template of clouds.yaml.j2
-     template:
-       src: clouds.yaml.j2
-       dest: /etc/openstack/clouds.yaml
+    - name: Creation openstack directory
+      file:
+        path: /etc/openstack/
+        state: directory
+    - name: Filling template of clouds.yaml.j2
+      template:
+        src: clouds.yaml.j2
+        dest: /etc/openstack/clouds.yaml

@@ -9,7 +9,7 @@ for role_path in $role_paths; do
   role_path="$role_path/.."
   cd "$role_path" || exit 2
   echo "Start test at $PWD"
-  molecule test
+  molecule test || rc=1
 done
 
 exit $rc
