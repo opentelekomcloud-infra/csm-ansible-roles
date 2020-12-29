@@ -31,7 +31,7 @@
         get_key.py
         --output {{ key_path }}
         --key key/{{ key_name }}
-        {{ '--local' if terraform_workspace == 'test' }}
+        {{ '--local' if terraform_workspace == 'test' else '' }}
       args:
         executable: python3
       register: get_key_output
