@@ -1,0 +1,25 @@
+---
+- job:
+    name: molecule-test
+    parent: otc-tox-py38
+    voting: false
+    nodeset: ubuntu-focal
+    pre-run: ./.zuul-playbooks/otc-tox-docker/pre.yaml
+    vars:
+      tox_envlist: molecule
+
+- job:
+    name: tox-linters-ansible-2.9-silent
+    parent: tox-linters-ansible-2.9
+    voting: false
+
+- project:
+    merge-mode: squash-merge
+    check:
+      jobs:
+        - tox-linters-ansible-2.9-silent
+        - molecule-test
+    gate:
+      jobs:
+        - tox-linters-ansible-2.9-silent
+        - molecule-test

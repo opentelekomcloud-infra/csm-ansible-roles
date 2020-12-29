@@ -4,7 +4,7 @@ dependency:
 driver:
   name: docker
   options:
-    managed: False
+    managed: false
 lint:
   name: yamllint
 platforms:
@@ -13,7 +13,8 @@ platforms:
 provisioner:
   name: ansible
   connection_options:
-    ansible_python_interpreter: "PYTHONPATH=$PYTHONPATH:/usr/lib/python3/dist-packages /usr/bin/env python"
+    ansible_python_interpreter: |
+      PYTHONPATH=$PYTHONPATH:/usr/lib/python3/dist-packages /usr/bin/env python
   inventory:
     group_vars:
       all:
